@@ -7,10 +7,9 @@ class MainClass:
     def main_loop(self):
         while True:
             # Main logic of your program goes here
-            if (model.evaluate()){
+            if model.evaluate():
                 post_trade()
-            }
-
+            
             # Wait for 1 second before the next iteration
             time.sleep(1)
 
