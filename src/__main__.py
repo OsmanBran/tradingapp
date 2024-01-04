@@ -1,4 +1,7 @@
 import time
+from MarketData import MarketData
+from Position import Position
+from model import Model
 
 class MainClass:
     def __init__(self):
@@ -7,9 +10,13 @@ class MainClass:
     def main_loop(self):
         while True:
             # Main logic of your program goes here
-            result = model.evaluate()
+
+            data = MarketData()
+
+            data.poll(1)
+            # result = self.model.evaluate()
             
-            Position.get_trade(result)
+            # Position.get_trade(result)
 
             
             # Wait for 1 second before the next iteration

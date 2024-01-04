@@ -1,3 +1,4 @@
+import time
 import requests
 
 class MarketData:
@@ -14,7 +15,7 @@ class MarketData:
             else:
                 print(f"Error: {response.status_code}")
 
-            time.sleep(poll_timer)
+            time.sleep(poll_rate)
 
 # # Fetch and print BTC/USDT data
 # btc_usdt_data = fetch_btc_usdt_data()

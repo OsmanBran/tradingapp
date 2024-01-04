@@ -1,3 +1,5 @@
+from Position import Position
+from Result import Result
 class Trade:
     def __init__(self):
         self.market_Id
