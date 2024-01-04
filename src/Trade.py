@@ -1,11 +1,8 @@
 class Trade:
     def __init__(self):
-        self.trade_funds = 0
-
-    def Buy(self, quantity):
-        # Make API call to buy
-        Position.currentPosition + quantity
-    
-    def Sell(self, quantity):
-        # Make API call to sell
-        Position.currentPosition - quantity
+        self.market_Id
+        self.price
+        self.amount
+        self.type # string (OrderType) Enum: "Limit" "Market" "Stop Limit" "Stop" "Take Profit"
+        self.side
+        self.fiat_balance
