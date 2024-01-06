@@ -1,12 +1,15 @@
+from MarketData import MarketData
 from Result import Result
 from Trade import Trade
+from model import Model
 
 class Position:
-    def __init__(self): 
+    def __init__(self, model: Model): 
         self.fiatBalance = 5000
         self.cryptoBalance = 0
         self.startingCapital = self.fiatBalance
         self.currentOperation = Result.NOTHING
+        self.new_price = model.new_price
 
     def get_current_balance(self):
         return self.fiatBalance
@@ -33,4 +36,6 @@ class Position:
         if is_trade_possible:
                 trade = Trade()
                 trade.market_Id: 'BTC-AUD'
+                trade.price: self.new_price
                 trade.amount: (trade / trade.price)
+                trade.type: "Limit" # TODO: Change to Limit eventually

@@ -3,6 +3,7 @@ import Result
 class Model:
     def __init__(self, market_data):
         self.market_data = market_data
+        self.new_price = 0
         self.n_slow = 21
         self.n_fast = 14
         # Index keeps track of where to place next price
@@ -19,9 +20,9 @@ class Model:
             return
 
         prev_state = self.ewma_slow > self.ewma_fast
-        new_price = self.market_data.poll()
-        self.eval_ewma_fast(new_price)
-        self.eval_ewma_slow(new_price)
+        self.new_price = self.market_data.poll()
+        self.eval_ewma_fast(self.new_price)
+        self.eval_ewma_slow(self.new_price)
         new_state = self.ewma_slow >= self.ewma_fast
 
         if Model.fast_exceeds_slow(prev_state, new_state):
