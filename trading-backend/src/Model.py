@@ -24,7 +24,9 @@ class Model:
         prev_state = self.ewma_slow > self.ewma_fast
 
         self.new_price = self.market_data.last_price
-        print("NEW PRICE", self.new_price, self.ewma_slow, self.ewma_fast)
+        
+        # print("NEW PRICE", self.new_price, self.ewma_slow, self.ewma_fast)
+        
         self.eval_ewma_fast(self.new_price)
         self.eval_ewma_slow(self.new_price)
         new_state = self.ewma_slow >= self.ewma_fast
@@ -53,7 +55,7 @@ class Model:
         self.ewma_slow = self.ewma_slow - weighted_last_price + weighted_new_price
         self.ewma_slow_arr[self.i_slow] = weighted_new_price
 
-        print("WMA SLOW ARRAY", self.ewma_slow_arr)
+        #print("WMA SLOW ARRAY", self.ewma_slow_arr)
 
         if self.i_slow == self.n_slow - 1:
             self.i_slow = 0
@@ -67,7 +69,8 @@ class Model:
         self.ewma_fast = self.ewma_fast - weighted_last_price + weighted_new_price
         self.ewma_fast_arr[self.i_fast] = weighted_new_price
 
-        print("WMA FAST ARRAY", self.ewma_fast_arr)
+        #print("WMA FAST ARRAY", self.ewma_fast_arr)
+        
         if self.i_fast == self.n_fast - 1:
             self.i_fast = 0
         else: 

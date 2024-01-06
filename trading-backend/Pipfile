@@ -8,6 +8,8 @@ requests = "*"
 pandas = "*"
 pymongo = "*"
 pytest = "*"
+websockets = "*"
+asyncio = "*"
 
 [dev-packages]
 
