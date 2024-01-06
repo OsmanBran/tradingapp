@@ -53,6 +53,8 @@ class Model:
         self.ewma_slow = self.ewma_slow - weighted_last_price + weighted_new_price
         self.ewma_slow_arr[self.i_slow] = weighted_new_price
 
+        print("WMA SLOW ARRAY", self.ewma_slow_arr)
+
         if self.i_slow == self.n_slow - 1:
             self.i_slow = 0
         else: 
@@ -62,10 +64,10 @@ class Model:
         weighted_new_price = new_price / self.n_fast
         
         weighted_last_price = self.ewma_fast_arr[self.i_fast]
-        print("WMA FAST ARRAY", self.ewma_fast_arr, self.i_fast)
         self.ewma_fast = self.ewma_fast - weighted_last_price + weighted_new_price
         self.ewma_fast_arr[self.i_fast] = weighted_new_price
 
+        print("WMA FAST ARRAY", self.ewma_fast_arr)
         if self.i_fast == self.n_fast - 1:
             self.i_fast = 0
         else: 
