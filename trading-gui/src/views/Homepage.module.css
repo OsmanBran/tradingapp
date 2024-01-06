@@ -1,0 +1,4 @@
+.graphPnLContainer {
+    display: flex;
+    flex-direction: row;
+}
