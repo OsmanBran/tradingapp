@@ -4,18 +4,18 @@ import requests
 class MarketData:
     def __init__(self):
         self.url = "https://api.btcmarkets.net/v3/markets/BTC-AUD/ticker"
+        self.last_price = 0
 
-    def poll(self, poll_rate):
-         while True:
-            response = requests.get(self.url)
+    def poll(self):
+        response = requests.get(self.url)
+        
+        if response.status_code == 200:
+            data = response.json()
             
-            if response.status_code == 200:
-                data = response.json()
-                print(data)
-            else:
-                print(f"Error: {response.status_code}")
-
-            time.sleep(poll_rate)
+            self.last_price = float(data['lastPrice'])
+            print("MARKET DATA", data, self.last_price)
+        else:
+            print(f"Error: {response.status_code}")
 
 # # Fetch and print BTC/USDT data
 # btc_usdt_data = fetch_btc_usdt_data()
