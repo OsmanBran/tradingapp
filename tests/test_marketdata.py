@@ -10,8 +10,6 @@ def last_price_values():
     last_prices = [3000, 2900, 2800, 2700, 2600, 2500, 2400, 2300, 2200, 2100, 2000, 1900, 1800, 1700, 1600, 1500, 1400, 1300, 1200, 1100, 1000, 900, 700, 700, 600, 500, 400, 300, 200, 100] # Replace with your desired sequence of values
     return cycle(last_prices)
 
-
-
 @pytest.fixture
 def mock_requests_get():
     
