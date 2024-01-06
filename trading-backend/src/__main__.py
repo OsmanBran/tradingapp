@@ -1,12 +1,13 @@
 import time
-from MarketData import MarketData
-from Position import Position
+import MarketData
+import MarketDataBT
+import Position
 from Trade import Trade
 from Model import Model
 
 class MainClass:
     def __init__(self):
-        self.market_data: MarketData = MarketData()
+        self.market_data: MarketData = MarketDataBT()
         self.model: Model = Model(self.market_data)
         self.position = Position(self.model)
 
