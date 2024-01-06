@@ -1,22 +1,26 @@
 import time
 from MarketData import MarketData
 from Position import Position
-from model import Model
+from Trade import Trade
+from Model import Model
 
 class MainClass:
     def __init__(self):
-        self.model = Model()
+        self.market_data: MarketData = MarketData()
+        self.model: Model = Model(self.market_data)
+        self.position = Position(self.model)
 
     def main_loop(self):
+
         while True:
             # Main logic of your program goes here
-
-            data = MarketData()
-
-            data.poll(1)
-            # result = self.model.evaluate()
+            self.market_data.poll()
+            result = self.model.evaluate()
+            print('result!!1', result)
             
-            # Position.get_trade(result)
+            trade: Trade = self.position.get_trade(result)
+            
+            print('TRADE OBJECT', trade)
 
             
             # Wait for 1 second before the next iteration
