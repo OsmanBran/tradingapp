@@ -6,17 +6,15 @@ from datetime import datetime
 
 class Endpoint:
     def __init__(self):
-        self.uri = "ws://localhost:8765"
         self.websocket_connections = set()
         self.sock_port = 8000
-        self.sock_url = 'localhost'
+        self.sock_url = "192.168.1.121"
         self.global_socket = lambda: None
         self.sock_server = None
 
     async def start_server(self):
         self.sock_server = websockets.serve(self.register, self.sock_url, self.sock_port)
         await asyncio.sleep(0.3) # Start up time
-        #async with self.sock_server: await self.broadcast(123, 123, 123, 123, None)
 
     async def register(self, websocket):
         print('register event received')
