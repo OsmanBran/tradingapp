@@ -7,7 +7,7 @@ from Model import Model
 from Position import Position
         
 def last_price_values():
-    last_prices = [300, 200, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200] # Replace with your desired sequence of values
+    last_prices = [3000, 2900, 2800, 2700, 2600, 2500, 2400, 2300, 2200, 2100, 2000, 1900, 1800, 1700, 1600, 1500, 1400, 1300, 1200, 1100, 1000, 900, 700, 700, 600, 500, 400, 300, 200, 100] # Replace with your desired sequence of values
     return cycle(last_prices)
 
 
@@ -43,15 +43,15 @@ def test_poll_with_sequential_lastPrices(mock_requests_get):
     assert market_data.last_price == 100  # Second value
 
 def test_evaluate_with_sequential_lastPrices(mock_requests_get):
-    while True:
-        market_data: MarketData = MarketData()
-        model: Model = Model(market_data)
+    market_data: MarketData = MarketData()
+    model: Model = Model(market_data)
     
-        position = Position(model)
+    position = Position(model)
         
+    while True:
+
         market_data.poll()
         result = model.evaluate()
-        
 
         print('result!!1', result, model.new_price)
     
