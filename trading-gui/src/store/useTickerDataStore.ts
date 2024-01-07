@@ -1,14 +1,14 @@
 import { create } from "zustand";
 
-interface TickerData {
+export interface TickerData {
     timestamp: Date,
     price: number,
     ewma_s: number,
     ewma_f: number,
     balance: number,
     trade: unknown
-
 }
+
 interface TickerDataState {
   tickerData: TickerData[];
   setTickerData: (newData: TickerData) => void;

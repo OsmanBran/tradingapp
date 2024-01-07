@@ -7,7 +7,7 @@ from datetime import datetime
 class Endpoint:
     def __init__(self):
         self.websocket_connections = set()
-        self.sock_port = 8000
+        self.sock_port = 8765
         self.sock_url = "192.168.1.121"
         self.global_socket = lambda: None
         self.sock_server = None

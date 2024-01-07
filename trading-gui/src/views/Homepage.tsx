@@ -4,6 +4,8 @@ import ProfitLoss from "../components/ProfitLoss";
 import classes from "./Homepage.module.css";
 import TradeHistory from "../components/TradeHistory";
 import { useTickerDataStore } from "../store/useTickerDataStore";
+import { Container } from "@material-ui/core";
+import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 
 const Homepage = () => {
 	const { tickerData, setTickerData, setWebSocket } = useTickerDataStore();
@@ -16,9 +18,9 @@ const Homepage = () => {
 		ws.onmessage = (event) => {
 			const data = JSON.parse(event.data);
 			// Assuming the data is already in the format of TickerData
-			if (data.type === "ticker") {
-				setTickerData(data);
-			}
+			console.log("WEB SOCKET DATA!!", data);
+
+			setTickerData(data);
 		};
 
 		ws.onerror = (error) => console.error("WebSocket Error: ", error);
@@ -28,20 +30,22 @@ const Homepage = () => {
 		setWebSocket(ws);
 
 		return () => ws.close();
-	}, [setTickerData, setWebSocket]);
+	}, []);
 
 	return (
-		<>
-			<div className={classes.graphPnLContainer}>
-				<Chart />
+		<Container>
+			<Grid container spacing={2} direction={"row"}>
 				<ProfitLoss />
-			</div>
-			{/* Render your ticker data here */}
-			{tickerData.map((data: unknown, index: React.Key | null | undefined) => (
-				<p key={index}>Ticker Data: {JSON.stringify(data)}</p>
-			))}
-			<TradeHistory />
-		</>
+				<Chart />
+				{/* Render your ticker data here
+				{tickerData.map(
+					(data: unknown, index: React.Key | null | undefined) => (
+						<p key={index}>Ticker Data: {JSON.stringify(data)}</p>
+					)
+				)} */}
+				<TradeHistory />
+			</Grid>
+		</Container>
 	);
 };
 

@@ -8,8 +8,10 @@ import {
 	YAxis,
 	Tooltip,
 	ResponsiveContainer,
+	Brush,
 } from "recharts";
 import CustomDot from "./elements/CustomDot";
+import { TickerData, useTickerDataStore } from "../store/useTickerDataStore";
 
 interface DataPoint {
 	index: number;
@@ -19,7 +21,18 @@ interface DataPoint {
 }
 
 const Chart = () => {
-	const data: DataPoint[] = [];
+	const data: DataPoint[] = []
+	// const {tickerData} = useTickerDataStore();
+	// const data: DataPoint[] = tickerData.map((ticker: TickerData, index: number) => ({
+	// 	index: ticker.timestamp,  // Or any other logic to generate index
+	// 	BitcoinPrice: ticker.price,
+	// 	// Assuming FMA and SMA are derived from ewma_s and ewma_f:
+	// 	FMA: ticker?.ewma_f, // Map according to your logic
+	// 	SMA: ticker?.ewma_s, // Map according to your logic
+	// 	// If FMA and SMA are not directly from ewma_s and ewma_f, you will need additional logic to calculate them
+	// }));
+
+
 	const fmaPeriod = 5; // Fast moving average period
 	const smaPeriod = 20; // Slow moving average period
 
@@ -54,12 +67,12 @@ const Chart = () => {
 		data.push(newDataPoint);
 	}
 
-	let lastFMA = data[0].FMA || 0;
-	let lastSMA = data[0].SMA || 0;
+	let lastFMA = data[0]?.FMA || 0;
+	let lastSMA = data[0]?.SMA || 0;
 	const intersections: number[] = [];
 
 	data.forEach((point, index) => {
-		if (point.FMA && point.SMA) {
+		if (point?.FMA && point?.SMA) {
 			if (
 				(lastFMA <= lastSMA && point.FMA > point.SMA) ||
 				(lastFMA >= lastSMA && point.FMA < point.SMA)
@@ -70,6 +83,9 @@ const Chart = () => {
 			lastSMA = point.SMA;
 		}
 	});
+
+
+	console.log("CHART DATA!!", data);
 
 	return (
 		<div className={classes.chartContainer}>
@@ -109,10 +125,11 @@ const Chart = () => {
 							/>
 						)}
 					/>
-					<CartesianGrid stroke="#ccc" />
+					{/* <CartesianGrid stroke="#ccc" /> */}
 					<XAxis dataKey="index" />
-					<YAxis />
+					{/* <YAxis domain={[63000, 68000]} /> */}
 					<Tooltip />
+					<Brush dataKey="name" height={30} stroke="#8884d8" />
 				</LineChart>
 			</ResponsiveContainer>
 		</div>
