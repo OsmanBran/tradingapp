@@ -15,9 +15,18 @@ Alternatively, run a command inside the virtualenv with pipenv run.
 ## Run Server
 `pipenv run python src/Server.py`
 
+to connect locally
+`pipenv run python -m websockets ws://localhost:8765/ -m websockets ws://localhost:8765/`
+
 ## Trouble shoot python env
 check your local pipenv running
 - run `pipenv shell`
 
 check your vs code running pipenv
 - ctrl shift P select python interpreter (pyshell)
+
+## After changing your python env.
+1. remove old python paths from system variables and restart
+2. pipenv --rm to delete old files from pipenv
+3. pipenv --python <NEW_VERSION>
+4. pipenv install should now work.
