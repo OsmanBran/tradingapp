@@ -3,7 +3,6 @@ import websockets
 import Trade
 import json
 from datetime import datetime
-from TempProducer import TempProducer
 ## Duplicated Code - refactor pending
 import time
 from MarketData import MarketData
@@ -14,7 +13,7 @@ from Model import Model
 from Endpoint import Endpoint
 import asyncio
 
-class TempServer:
+class Server:
     def __init__(self):
         self.websocket_connections = set()
         self.sock_port = 8765
@@ -27,14 +26,15 @@ class TempServer:
         self.position = Position(self.model)
         self.endpoint = Endpoint()
 
-    def producer(self):
+    def evaluate_model(self):
         # Main logic of your program goes here
         self.market_data.poll()
+
         result = self.model.evaluate()
         
         trade: Trade = self.position.get_trade(result)
         
-        return TempServer.getMsg(self.market_data.last_price, self.model.ewma_fast, self.model.ewma_slow, self.position.fiat_balance, trade)
+        return Server.getMsg(self.market_data.last_price, self.model.ewma_fast, self.model.ewma_slow, self.position.fiat_balance, trade)
 
     def getMsg(price: float, ewma_s: float, ewma_f: float, balance: float, trade: Trade):
             msg = {
@@ -47,10 +47,10 @@ class TempServer:
             }
             return json.dumps(msg)
     
-    async def producer_handler(self, websocket):
+    async def model_handler(self, websocket):
         while True:
             await asyncio.sleep(5)
-            message = self.producer()
+            message = self.evaluate_model()
             print(message)
             result = await websocket.send(message)
             print(result)
@@ -76,10 +76,10 @@ class TempServer:
             await asyncio.gather(*[client.send(json_str) for client in self.websocket_connections])
 
 
-server = TempServer()
+server = Server()
 
 async def main(websocket, path):
-    producer_task = asyncio.create_task(server.producer_handler(websocket))
+    producer_task = asyncio.create_task(server.model_handler(websocket))
     consumer_task = asyncio.create_task(server.consumer_handler(websocket))
     await asyncio.gather(producer_task, consumer_task)
 
