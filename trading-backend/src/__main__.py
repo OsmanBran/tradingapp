@@ -7,6 +7,7 @@ from Model import Model
 from Endpoint import Endpoint
 import asyncio
 
+# This is deprecated now.
 class MainClass:
     def __init__(self):
         self.market_data: MarketData = MarketDataBT()

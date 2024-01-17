@@ -51,4 +51,4 @@ test_str = {
 }
 
 testDb = BacktestDb()
-testDb.start_session("test_two", 30)
+testDb.start_session("d20240111i30", 30)

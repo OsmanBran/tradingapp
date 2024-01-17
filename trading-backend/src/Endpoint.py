@@ -8,7 +8,7 @@ class Endpoint:
     def __init__(self):
         self.websocket_connections = set()
         self.sock_port = 8765
-        self.sock_url = "192.168.1.121"
+        self.sock_url = "localhost"
         self.global_socket = lambda: None
         self.sock_server = None
 
@@ -18,7 +18,11 @@ class Endpoint:
 
     async def register(self, websocket):
         print('register event received')
-        self.websocket_connections.add(websocket) # Add this client's socket
+        self.websocket_connections.add(websocket)
+
+        message = "Connected successfully to trading"
+        print(f"Sending message: {message}")
+        await websocket.send(message)
 
     async def broadcast(self, price: float, ewma_s: float, ewma_f: float, balance: float, trade: Trade):
             msg = {

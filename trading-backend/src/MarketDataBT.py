@@ -8,12 +8,15 @@ class MarketDataBT(MarketData):
         connection_string = "mongodb://localhost:27017/"
         self.client = MongoClient(connection_string)
         self.db = self.client["local"]
-        self.collection = self.db["test_two"]
+        self.collection = self.db["d20240111i30"]
         self.last_price = 0
+        self.max = 70
 
     def poll(self):
         query = {"_id": self.counter}
         result = self.collection.find_one(query)
+
+        if self.counter == self.max: self.counter = 0
 
         if result:
             print("Sent item " + str(self.counter))
