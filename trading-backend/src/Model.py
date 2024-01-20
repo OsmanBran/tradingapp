@@ -50,7 +50,7 @@ class Model:
         return not prev_state and new_state
 
     def eval_ewma_slow(self, new_price: int):
-        weighted_new_price = new_price / self.n_fast
+        weighted_new_price = new_price / self.n_slow
         weighted_last_price = self.ewma_slow_arr[self.i_slow]
         self.ewma_slow = self.ewma_slow - weighted_last_price + weighted_new_price
         self.ewma_slow_arr[self.i_slow] = weighted_new_price

@@ -41,11 +41,13 @@ class Server:
         
         trade: Trade = self.position.get_trade(result)
 
-        self.exchange.post_trade(trade)
+        if trade != None:
+            print("Sending order to exchange")
+            self.exchange.post_trade(trade)
         
         return Server.getMsg(self.market_data.last_price, self.model.ewma_fast, self.model.ewma_slow, self.position.fiat_balance)
 
-    def getMsg(price: float, ewma_s: float, ewma_f: float, balance: float, trade: Trade):
+    def getMsg(price: float, ewma_s: float, ewma_f: float, balance: float):
             msg = {
                    "message_type": MessageTypes.TICKER.name,
                    "timestamp": str(datetime.now().time()),
@@ -58,7 +60,7 @@ class Server:
     
     async def model_handler(self, websocket):
         while True:
-            await asyncio.sleep(5)
+            await asyncio.sleep(1)
             message = self.evaluate_model()
             print(message)
             result = await websocket.send(message)
@@ -66,7 +68,7 @@ class Server:
 
     async def trade_handler(self, websocket):
         while True:
-             await asyncio.sleep(1)
+             await asyncio.sleep(0.5)
              message = self.exchange.poll_trades()
              if message != None:
                 result = await websocket.send(message)
