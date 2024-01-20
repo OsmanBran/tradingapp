@@ -44,5 +44,7 @@ class Position:
             trade.fiat_balance: self.fiat_balance
             
             return trade
+
+        return None
                 
 
