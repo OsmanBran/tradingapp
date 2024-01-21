@@ -5,44 +5,56 @@ from Model import Model
 
 class Position:
     def __init__(self, model: Model): 
-        self.fiat_balance = 5000
-        self.cryptoBalance = 0
-        self.startingCapital = self.fiat_balance
-        self.currentOperation = Result.NOTHING
-        self.new_price = model.new_price
-        self.is_trade_possible: bool = 0
+        self.fiat_qty = 5000
+        self.crypto_qty = 0
+        self.starting_qty = self.fiat_qty
+        self.model = model
 
-    def get_current_balance(self):
-        return self.fiat_balance
-    
-    def get_profit_loss(self):
-        return self.fiat_balance - self.startingCapital
-
-    def subtract_balance(self, subtract_amount):
-        return self.fiat_balance - subtract_amount
-
-    def add_balance(self, add_amount):
-        return self.fiat_balance + add_amount
+    def get_current_profit(self):
+        return self.fiat_qty - self.starting_qty
     
     def get_trade(self, result: Result):
+        if result == Result.NOTHING:
+            return None
+
+        trade_notional = 0
         if result == Result.BUY:
-            quantity = 0.25 * self.fiat_balance
-            requested_trade = self.fiat_balance - quantity
-            self.is_trade_possible = (trade > 0) & (self.currentOperation != Result.BUY)
+            # to do listen for exchange confirm
+            trade_notional = 0.25 * self.fiat_qty
+            self.fiat_qty -= trade_notional
+            trade_qty = (trade_notional / self.model.new_price)
+            self.crypto_qty += trade_qty
             
-        if result == Result.SELL:
-            requested_trade = self.fiat_balance - (0.25 * self.fiat_balance)
-            self.is_trade_possible = (requested_trade > 0) & (self.cryptoBalance > 0) & (self.currentOperation != Result.SELL)
-            
-        if self.is_trade_possible:
+            total_notional = self.fiat_qty + self.crypto_qty * self.model.new_price
+            print(f"BUY: Price: {self.model.new_price}, Qty: {trade_qty}, Total Notional: {total_notional}")
+
             trade = Trade()
-            trade.market_Id: 'BTC-AUD'
-            trade.price: self.new_price
-            trade.amount: (requested_trade / self.new_price)
-            trade.type: 'Limit' # TODO: Change to Limit eventually
-            trade.side: 'Bid' if result == Result.BUY else 'Ask'
-            trade.fiat_balance: self.fiat_balance
+            trade.market_Id: "BTC-AUD"
+            trade.price: self.model.new_price
+            trade.amount: trade_qty
+            trade.type: "Market" # TODO: Change to Limit eventually
+            trade.side: "Bid"
+            trade.fiat_qty: self.fiat_qty
+            return trade
             
+        if result == Result.SELL and self.crypto_qty > 0:
+            print("SELL: Price: %d, Qty: %d, Total Notional: %d")
+
+            # to do listen for exchange confirm
+            self.fiat_qty += self.crypto_qty * self.model.new_price
+            self.crypto_qty = 0
+
+            total_notional = self.fiat_qty + self.crypto_qty * self.model.new_price
+            print(f"SELL: Price: {self.model.new_price}, Qty: {self.crypto_qty}, Total Notional: {total_notional}")
+
+
+            trade = Trade()
+            trade.market_Id: "BTC-AUD"
+            trade.price: self.model.new_price
+            trade.amount: self.crypto_qty
+            trade.type: "Market" # TODO: Change to Limit eventually
+            trade.side: "Ask"
+            trade.fiat_qty: self.fiat_qty
             return trade
 
         return None
