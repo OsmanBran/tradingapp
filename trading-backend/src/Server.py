@@ -80,8 +80,9 @@ class Server:
                     "open_amount": trade.open_amount,
                     "type": trade.type,
                     "side": trade.side,
-                    "fiat_balance": trade.fiat_balance,
-                    "order_Id": trade.order_Id
+                    "order_Id": trade.order_Id,
+                    "fiat_qty": trade.fiat_qty,
+                    "total_notional": trade.total_notional
                 }
                 result = await websocket.send(json.dumps(json_message))
                 print(result)

@@ -29,12 +29,13 @@ class Position:
             print(f"BUY: Price: {self.model.new_price}, Qty: {trade_qty}, Total Notional: {total_notional}")
 
             trade = Trade()
-            trade.market_Id: "BTC-AUD"
-            trade.price: self.model.new_price
-            trade.amount: trade_qty
-            trade.type: "Market" # TODO: Change to Limit eventually
-            trade.side: "Bid"
-            trade.fiat_qty: self.fiat_qty
+            trade.market_Id = "BTC-AUD"
+            trade.price = self.model.new_price
+            trade.amount = trade_qty
+            trade.type = "Market" # TODO: Change to Limit eventually
+            trade.side = "Bid"
+            trade.fiat_qty = self.fiat_qty
+            trade.total_notional = total_notional
             return trade
             
         if result == Result.SELL and self.crypto_qty > 0:
@@ -49,12 +50,13 @@ class Position:
 
 
             trade = Trade()
-            trade.market_Id: "BTC-AUD"
-            trade.price: self.model.new_price
-            trade.amount: self.crypto_qty
-            trade.type: "Market" # TODO: Change to Limit eventually
-            trade.side: "Ask"
-            trade.fiat_qty: self.fiat_qty
+            trade.market_Id = "BTC-AUD"
+            trade.price = self.model.new_price
+            trade.amount = self.crypto_qty
+            trade.type = "Market" # TODO: Change to Limit eventually
+            trade.side = "Ask"
+            trade.fiat_qty = self.fiat_qty
+            trade.total_notional = total_notional
             return trade
 
         return None
