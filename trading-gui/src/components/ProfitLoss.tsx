@@ -1,9 +1,9 @@
 import React from "react";
 import classes from "./ProfitLoss.module.css";
-import { Box, Paper } from "@material-ui/core";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import { Stack } from "@mui/system";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
+import { Box, Paper } from "@mui/material";
 
 const ProfitLoss = () => {
 	return (
@@ -15,7 +15,7 @@ const ProfitLoss = () => {
 							<CurrencyExchangeOutlinedIcon />
 						</Box>
 						<Stack marginLeft={"1.5rem"} direction={"column"}>
-							<h4 className={classes.valueText}> $1000 </h4>
+							<h4 className={classes.valueText}> $5000 </h4>
 							<h6 className={classes.subText}>
 								Starting Capital
 							</h6>
