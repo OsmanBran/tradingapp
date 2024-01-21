@@ -1,1 +1,3 @@
 /Pipfile.lock
+.vscode/*
+/trading-backend/src/__pycache__/*

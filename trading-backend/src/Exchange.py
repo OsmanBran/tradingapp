@@ -35,18 +35,3 @@ class Exchange:
         ## pretend to send order here and we get something back. Note should run on separate thread later.
         trade.status = "Accepted"
         trade.open_amount = trade.amount
-    
-    def getTradeMsg( trade: Trade):
-        msg = {
-                "message_type": "TRADE",
-                "status": trade.status,
-                "market_Id": trade.market_Id,
-                "price": trade.price,
-                "amount": trade.amount,
-                "open_amount": trade.open_amount,
-                "type": trade.type,
-                "side": trade.side,
-                "fiat_balance": trade.fiat_balance,
-                "order_Id": trade.order_Id
-        }
-        return json.dumps(msg)
