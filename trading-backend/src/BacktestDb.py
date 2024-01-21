@@ -51,4 +51,4 @@ test_str = {
 }
 
 testDb = BacktestDb()
-testDb.start_session("BTC-Collection", 30)
+testDb.start_session("BTC-Collection-Test-1", 30)
