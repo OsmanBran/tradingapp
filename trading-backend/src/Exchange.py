@@ -10,17 +10,19 @@ class Exchange:
 
     def poll_trades(self):
         # post any pending trades
-        trade = self.pending_orders.get()
-        if trade != None:
+        if not self.pending_orders.empty():
+            print("Mark order as sent to exchange")
             # mock order successful acceptance
+            trade = self.pending_orders.get()
             self.accepted_orders.put(trade)
             self.orderId = self.mock_order_id
             self.mock_order_id += 1
             return trade
         
         # poll for any trade updates on pending orders
-        trade = self.accepted_orders.get()
-        if trade != None:
+        if not self.accepted_orders.empty():
+            print("Mark order as filled by exchange")
+            trade = self.accepted_orders.get()
             trade.status = "Filled"
             trade.open_amount = 0.0
             return trade
