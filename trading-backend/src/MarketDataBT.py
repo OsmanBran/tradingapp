@@ -16,8 +16,6 @@ class MarketDataBT(MarketData):
         query = {"_id": self.counter}
         result = self.collection.find_one(query)
 
-        if self.counter == self.max: self.counter = 0
-
         if result:
             print("Sent item " + str(self.counter))
             self.counter += 1
@@ -25,4 +23,6 @@ class MarketDataBT(MarketData):
         else:
             print("End of session")
             self.client.close()
+        
+        
 
