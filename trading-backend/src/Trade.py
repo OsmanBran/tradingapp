@@ -10,3 +10,4 @@ class Trade:
         self.fiat_qty = 0
         self.order_Id = 0
         self.total_notional = 0.0
+        self.notional_change = 0

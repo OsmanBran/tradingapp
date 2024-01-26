@@ -79,7 +79,8 @@ class Server:
                     "side": trade.side,
                     "order_Id": trade.order_Id,
                     "fiat_qty": trade.fiat_qty,
-                    "total_notional": trade.total_notional
+                    "total_notional": trade.total_notional,
+                    "notional_change": trade.notional_change
                 }
                 result = await websocket.send(json.dumps(json_message))
                 print(result)
