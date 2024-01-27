@@ -25,14 +25,17 @@ export interface TradeData extends Data {
 	amount: number;
 	open_amount: number;
 	side: "Bid" | "Ask";
-	fiat_balance: number;
+	fiat_qty: number;
 	order_id: string;
+	total_notional: number;
+	notional_change: number;
 }
 
 interface DataState {
 	tickerData: TickerData[];
 	tradeData: TradeData[];
 	setTickerData: (newTickerData: TickerData) => void;
+	setTradeData: (newTradeData: TradeData) => void;
 	webSocket: WebSocket | null;
 	setWebSocket: (ws: WebSocket) => void;
 }

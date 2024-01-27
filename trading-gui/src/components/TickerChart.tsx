@@ -12,6 +12,7 @@ import {
 	Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { Box, Card, CardHeader, Grid, Paper } from "@mui/material";
 
 ChartJS.register(
 	CategoryScale,
@@ -34,7 +35,7 @@ const TickerChart = () => {
 	// const data: DataPoint[] = []
 
 	const { tickerData } = useDataStore();
-	console.log("TICKER DATA!!", tickerData);
+
 	const data: DataPoint[] = tickerData.map(
 		(ticker: TickerData, index: number) => ({
 			index: index, // Or any other logic to generate index
@@ -97,8 +98,6 @@ const TickerChart = () => {
 		}
 	});
 
-	console.log("CHART DATA!!", data);
-
 	const chartData = {
 		labels: data.map((_, i) => i), // Assuming 'index' is just the index of the data array
 		datasets: [
@@ -107,18 +106,24 @@ const TickerChart = () => {
 				data: data.map((item) => item.BitcoinPrice),
 				borderColor: "#8884d8",
 				fill: true,
+				pointRadius: 0,
+				tension: 0.4,
 			},
 			{
 				label: "FMA",
 				data: data.map((item) => item.FMA),
 				borderColor: "#82ca9d",
 				fill: false,
+				pointRadius: 0,
+				tension: 0.4,
 			},
 			{
 				label: "SMA",
 				data: data.map((item) => item.SMA),
 				borderColor: "#ff7300",
 				fill: false,
+				pointRadius: 0,
+				tension: 0.4,
 			},
 		],
 	};
@@ -127,8 +132,8 @@ const TickerChart = () => {
 		responsive: true,
 		scales: {
 			y: {
-				min: 62500,
-				max: 63500,
+				min: tickerData[0]?.price - 500,
+				max: tickerData[0]?.price + 500,
 			},
 		},
 		interaction: {
@@ -143,10 +148,12 @@ const TickerChart = () => {
 	};
 
 	return (
-		<div className={classes.chartContainer}>
-			<div>Bitcoin Price Chart</div>
-			<Line data={chartData} options={chartOptions} />;
-		</div>
+		<Card elevation={0}>
+			<CardHeader title="Bitcoin Price" style={{ paddingBottom: 0 }} />
+			<Box sx={{ p: 3, pb: 1 }}>
+				<Line data={chartData} options={chartOptions} />;
+			</Box>
+		</Card>
 	);
 };
 

@@ -26,8 +26,7 @@ class Server:
         self.sock_port = 8765
         self.sock_url = "localhost"
         self.global_socket = lambda: None
-        self.sock_server = None
-
+        self.sock_server = None# self.market_data: MarketData = MarketDBT()
         self.market_data: MarketData = MarketDataBT()
         self.model: Model = Model(self.market_data)
         self.endpoint = Endpoint()

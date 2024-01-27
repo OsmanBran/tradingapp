@@ -1,5 +1,3 @@
 .chartContainer {
-    display: flex;
-    flex-direction: column;
-    width: 80%
+    width: calc(100% * 8 / var(--Grid-columns));
 }
