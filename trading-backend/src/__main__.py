@@ -10,6 +10,7 @@ import asyncio
 # This is deprecated now.
 class MainClass:
     def __init__(self):
+        
         self.market_data: MarketData = MarketDataBT()
         self.model: Model = Model(self.market_data)
         self.position = Position(self.model)

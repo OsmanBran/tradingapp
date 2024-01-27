@@ -4,11 +4,10 @@ from pymongo import MongoClient
 class MarketDataBT(MarketData):
     def __init__(self):
         self.counter = 0
-
-        connection_string = "mongodb://localhost:27017/"
+        connection_string = "mongodb+srv://globalAccess:osmi1234@crypto-db.2egqfjz.mongodb.net/?retryWrites=true&w=majority"
         self.client = MongoClient(connection_string)
-        self.db = self.client["local"]
-        self.collection = self.db["d20240111i30"]
+        self.db = self.client["Crypto-DB"]
+        self.collection = self.db["BTC-Collection-Test-7"]
         self.last_price = 0
         self.max = 70
 
@@ -21,8 +20,9 @@ class MarketDataBT(MarketData):
             self.counter += 1
             self.last_price = float(result["lastPrice"])
         else:
-            print("End of session")
-            self.client.close()
+            print("No item found for " + str(self.counter))
+    def close(self):
+        self.client.close()
         
         
 

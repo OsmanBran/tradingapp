@@ -1,0 +1,3 @@
+.chartContainer {
+    width: calc(100% * 8 / var(--Grid-columns));
+}

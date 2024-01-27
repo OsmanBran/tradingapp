@@ -26,8 +26,7 @@ class Server:
         self.sock_port = 8765
         self.sock_url = "localhost"
         self.global_socket = lambda: None
-        self.sock_server = None
-
+        self.sock_server = None# self.market_data: MarketData = MarketDBT()
         self.market_data: MarketData = MarketDataBT()
         self.model: Model = Model(self.market_data)
         self.endpoint = Endpoint()
@@ -57,7 +56,7 @@ class Server:
     
     async def model_handler(self, websocket):
         while True:
-            await asyncio.sleep(1)
+            await asyncio.sleep(5)
             message = self.evaluate_model()
             print(message)
             result = await websocket.send(message)
@@ -65,7 +64,7 @@ class Server:
 
     async def trade_handler(self, websocket):
         while True:
-             await asyncio.sleep(0.5)
+             await asyncio.sleep(1)
              trade = self.exchange.evaluate()
              if trade != None:
                 json_message = {

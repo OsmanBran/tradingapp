@@ -1,16 +1,16 @@
 import time
 import requests
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 
 class BacktestDb:
     def __init__(self):
-        connection_string = "mongodb://localhost:27017/"
-        self.client = MongoClient(connection_string)
-        self.db = self.client["local"]
+        connection_string = "mongodb+srv://globalAccess:osmi1234@crypto-db.2egqfjz.mongodb.net/?retryWrites=true&w=majority"
+        self.client = MongoClient(connection_string, server_api=ServerApi('1'))
+        self.db = self.client["Crypto-DB"]
         self.collection = None
         self.interval_seconds = 30
         self.counter = 0
-
         self.url = "https://api.btcmarkets.net/v3/markets/BTC-AUD/ticker"
 
     
@@ -51,4 +51,4 @@ test_str = {
 }
 
 testDb = BacktestDb()
-testDb.start_session("d20240111i30", 30)
+testDb.start_session("BTC-Collection-Test-7", 15)
