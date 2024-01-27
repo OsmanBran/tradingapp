@@ -2,6 +2,7 @@ import asyncio
 import websockets
 import Trade
 import json
+from Result import Result
 from datetime import datetime
 from enum import Enum
 ## Duplicated Code - refactor pending
@@ -29,9 +30,8 @@ class Server:
 
         self.market_data: MarketData = MarketDataBT()
         self.model: Model = Model(self.market_data)
-        self.position = Position(self.model)
         self.endpoint = Endpoint()
-        self.exchange = Exchange()
+        self.exchange = Exchange(Position(self.model))
 
     def evaluate_model(self):
         # Main logic of your program goes here
@@ -39,22 +39,19 @@ class Server:
 
         result = self.model.evaluate()
         
-        trade: Trade = self.position.get_trade(result)
-
-        if trade != None:
-            print("Sending order to exchange")
-            self.exchange.post_trade(trade)
+        if result != Result.NOTHING:
+            print("Send request to ")
+            self.exchange.request_trade(result)
         
-        return Server.getMsg(self.market_data.last_price, self.model.ewma_fast, self.model.ewma_slow, self.position.fiat_qty)
+        return Server.getMsg(self.market_data.last_price, self.model.ewma_fast, self.model.ewma_slow)
 
-    def getMsg(price: float, ewma_s: float, ewma_f: float, balance: float):
+    def getMsg(price: float, ewma_s: float, ewma_f: float):
             msg = {
                    "message_type": MessageTypes.TICKER.name,
                    "timestamp": str(datetime.now().time()),
                    "price": price,
                    "ewma_s": ewma_s,
                    "ewma_f": ewma_f,
-                   "balance": balance,
             }
             return json.dumps(msg)
     
@@ -69,7 +66,7 @@ class Server:
     async def trade_handler(self, websocket):
         while True:
              await asyncio.sleep(0.5)
-             trade = self.exchange.poll_trades()
+             trade = self.exchange.evaluate()
              if trade != None:
                 json_message = {
                     "message_type": "TRADE",
@@ -80,8 +77,10 @@ class Server:
                     "open_amount": trade.open_amount,
                     "type": trade.type,
                     "side": trade.side,
-                    "fiat_balance": trade.fiat_balance,
-                    "order_Id": trade.order_Id
+                    "order_Id": trade.order_Id,
+                    "fiat_qty": trade.fiat_qty,
+                    "total_notional": trade.total_notional,
+                    "notional_change": trade.notional_change
                 }
                 result = await websocket.send(json.dumps(json_message))
                 print(result)
