@@ -24,8 +24,6 @@ const Homepage = () => {
 		ws.onmessage = (event) => {
 			const data: Data = JSON.parse(event.data);
 			// Assuming the data is already in the format of TickerData
-
-			console.log("INCOMING DATA OBJECT", data);
 			if (data.message_type === MessageType.Ticker) {
 				setTickerData(data as TickerData);
 			} else if (data.message_type === MessageType.Trade) {

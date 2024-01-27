@@ -7,7 +7,7 @@ class MarketDataBT(MarketData):
         connection_string = "mongodb+srv://globalAccess:osmi1234@crypto-db.2egqfjz.mongodb.net/?retryWrites=true&w=majority"
         self.client = MongoClient(connection_string)
         self.db = self.client["Crypto-DB"]
-        self.collection = self.db["BTC-Collection-Test-6"]
+        self.collection = self.db["BTC-Collection-Test-7"]
         self.last_price = 0
         self.max = 70
 
