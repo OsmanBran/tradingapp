@@ -1,5 +1,7 @@
 import time
+import datetime
 import requests
+import argparse
 from pymongo import MongoClient
 
 class BacktestDb:
@@ -8,47 +10,48 @@ class BacktestDb:
         self.client = MongoClient(connection_string)
         self.db = self.client["local"]
         self.collection = None
-        self.interval_seconds = 30
-        self.counter = 0
 
         self.url = "https://api.btcmarkets.net/v3/markets/BTC-AUD/ticker"
 
     
-    def start_session(self, collection_str: str, interval_seconds: int):
+    def start_session(self, collection_str: str, interval_minutes: int, session_length: int):
         self.collection = self.db[collection_str]
-        self.interval_seconds = interval_seconds
-        self.counter = 0
+                
+        session_count = int( session_length / interval_minutes )
         
-        while True:
+        for i in range(session_count):
             response = requests.get(self.url)
             
             if response.status_code == 200:
                 data = response.json()
-                data["_id"] = self.counter
-                self.counter += 1
+                data["_id"] = i
                 self.push_update(data)
                 print(data)            
             else:
                 print(f"Error: {response.status_code}")
 
-            time.sleep(self.interval_seconds)
+            time.sleep(interval_minutes * 60)
+        print("Session complete saved to db ...")
     
     def push_update(self, data):
         self.collection.insert_one(data)
 
-test_str = {
-"marketId": "BAT-AUD",
-"bestBid": "0.2612",
-"bestAsk": "0.2677",
-"lastPrice": "0.2652",
-"volume24h": "6392.34930418",
-"volumeQte24h": "1.39",
-"price24h": "130",
-"pricePct24h": "0.002",
-"low24h": "0.2621",
-"high24h": "0.2708",
-"timestamp": "2019-09-01T10:35:04.940000Z"
-}
+def main():
+    parser = argparse.ArgumentParser(description='Download data from btc markets')
+    parser.add_argument('--interval', '-i', default=1, help='Interval between data in minutes')
+    parser.add_argument('--length', '-l', default=30, help='Length of the session in minutes')
+    args = parser.parse_args()
 
-testDb = BacktestDb()
-testDb.start_session("d20240111i30", 30)
+    print("Interval (minutes):", args.interval)
+    print("Session Length (minutes):", args.length)
+
+    # collection is named in format YYYYMMDD-HH-MM-SS
+    current_datetime = datetime.datetime.now()
+    collection_str = current_datetime.strftime("%Y%m%d-%H%M%S")
+    print("Storing to collection:", collection_str)
+
+    db = BacktestDb()
+    db.start_session(collection_str, args.interval, args.length)
+
+if __name__ == "__main__":
+    main()
